@@ -13,6 +13,8 @@
     ],
     "rules": {
         "indent": ["error", 4],
-        "react/react-in-jsx-scope": "off"
+        "semi": ["error", "always"],
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": [0]
     }
 }
