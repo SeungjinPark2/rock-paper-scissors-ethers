@@ -2,12 +2,26 @@ const networks = [
     {
         chainId: '0x7a69',
         chainName: 'Anvil',
-        rpcUrls: ['ws://localhost:8545'],
+        renderName: 'anvil',
+        currencyInfo: {
+            symbol: 'ETH',
+            decimals: 18,
+            name: 'eth',
+        },
+        websocketUrl: 'ws://localhost:8545',
+        rpcUrl: 'http://localhost:8545',
     },
     {
         chainId: '0x13881',
-        chainName: 'Mumbai',
-        rpcUrls: ['ws://rpc-mumbai.matic.today'],
+        chainName: 'Mumbai TestNet',
+        renderName: 'mumbai',
+        currencyInfo: {
+            symbol: 'MATIC',
+            decimals: 18,
+            name: 'matic',
+        },
+        websocketUrl: 'ws://rpc-mumbai.matic.today',
+        rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
     },
 ];
 
