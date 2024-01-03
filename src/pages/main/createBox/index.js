@@ -25,8 +25,7 @@ const Button = styled.button`
     ${borderGradient}
 `;
 
-const Label = styled.label`
-`;
+const Label = styled.label``;
 
 const Input = styled.input`
     background: transparent;
@@ -47,6 +46,7 @@ function CreateBox() {
     const supportedNetworks = getSupportedNetworks();
     // It's fine to access 0 index :)
     const [network, setNetwork] = useState(supportedNetworks[0]);
+    const [betSize, setBetSize] = useState(0);
 
     return (
         <CreateBoxCard>
@@ -57,8 +57,13 @@ function CreateBox() {
                 </Wrap>
                 <Wrap>
                     <Label>
-                    Set bet size of each player in ether
-                        <Input type='number' id='bet-size-input' />
+                        Set bet size of each player in ether
+                        <Input 
+                            type='number'
+                            defaultValue={betSize}
+                            value={betSize}
+                            onChange={e => setBetSize(e.target.value)}
+                        />
                     </Label>
                 </Wrap>
             </div>

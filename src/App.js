@@ -1,12 +1,13 @@
 import './App.css';
-import { Main } from './pages';
 import { MetamaskContextProvider } from './hooks/useMetaMask';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
 
 function App() {
     return (
         <div className='app'>
             <MetamaskContextProvider>
-                <Main />
+                <RouterProvider router={router} />
             </MetamaskContextProvider>
         </div>
     );

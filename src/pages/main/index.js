@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { ColumnFlexBox } from '../../components';
-import { useMetaMask } from '../../hooks/useMetaMask';
-import { MetamaskNotFound } from '../error';
-import CreateBox from './createBox';
+import { Outlet } from 'react-router-dom';
 
 const Container = styled(ColumnFlexBox)`
     justify-content: center;
@@ -12,18 +10,11 @@ const Container = styled(ColumnFlexBox)`
 `;
 
 function Main() {
-    const {wallet, hasProvider} = useMetaMask();
 
     return (
-        <>
-            {
-                hasProvider == true ? (
-                    <Container>
-                        <CreateBox />
-                    </Container>
-                ) : <MetamaskNotFound />
-            }
-        </>
+        <Container>
+            <Outlet />
+        </Container>
     );
 }
 
