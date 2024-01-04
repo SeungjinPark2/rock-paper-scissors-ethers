@@ -1,5 +1,0 @@
-const GameFactoryAddress = '';
-
-export {
-    GameFactoryAddress,
-};

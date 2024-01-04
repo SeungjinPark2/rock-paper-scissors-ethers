@@ -10,7 +10,7 @@ const networks = [
         },
         websocketUrl: 'ws://localhost:8545',
         rpcUrl: 'http://localhost:8545',
-        contractAddress: '',
+        contractAddress: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
     },
     {
         chainId: '0x13881',
@@ -21,8 +21,8 @@ const networks = [
             decimals: 18,
             name: 'matic',
         },
-        websocketUrl: 'ws://rpc-mumbai.matic.today',
-        rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
+        websocketUrl: 'wss://rpc-mumbai.matic.today',
+        rpcUrl: 'wss://polygon-mumbai-bor.publicnode.com',
         contractAddress: '',
     },
 ];

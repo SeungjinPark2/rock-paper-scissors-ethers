@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { ColumnFlexBox, borderGradient } from '../../../components';
 import DropDown from './dropdown';
 import { getSupportedNetworks } from '../../../ethereum';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useWeb3 } from '../../../hooks/useWeb3';
 
 const CreateBoxCard = styled(ColumnFlexBox)`
     width: 300px;
@@ -43,10 +44,15 @@ const Wrap = styled.div`
 `;
 
 function CreateBox() {
+    const { web3Obj, updateWeb3 } = useWeb3();
     const supportedNetworks = getSupportedNetworks();
     // It's fine to access 0 index :)
     const [network, setNetwork] = useState(supportedNetworks[0]);
     const [betSize, setBetSize] = useState(0);
+
+    useEffect(() => {
+        updateWeb3(network);
+    }, [network]);
 
     return (
         <CreateBoxCard>
@@ -60,7 +66,6 @@ function CreateBox() {
                         Set bet size of each player in ether
                         <Input 
                             type='number'
-                            defaultValue={betSize}
                             value={betSize}
                             onChange={e => setBetSize(e.target.value)}
                         />
