@@ -2,15 +2,15 @@ import './App.css';
 import { MetamaskContextProvider } from './hooks/useMetaMask';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
-import { Web3ContextProvider } from './hooks/useWeb3';
+import { WsContextProvider } from './hooks/useWsProvider';
 
 function App() {
     return (
         <div className='app'>
             <MetamaskContextProvider>
-                <Web3ContextProvider>
+                <WsContextProvider>
                     <RouterProvider router={router} />
-                </Web3ContextProvider>
+                </WsContextProvider>
             </MetamaskContextProvider>
         </div>
     );

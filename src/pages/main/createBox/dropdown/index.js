@@ -1,95 +1,60 @@
-import { useEffect } from 'react';
-import styled from 'styled-components';
-import { borderGradient } from '../../../../components';
+import { useEffect, useState } from 'react';
+import { getSupportedNetworks } from '../../../../ethereum';
+import { Arrow, DropDownContainer, DropDownItem, StyledDropDown } from './components';
+import { useWsProvider } from '../../../../hooks/useWsProvider';
 
-const DropDownItem = styled.div`
-    padding: 5px;
-    &:first-child {
-        border-bottom: none;
-    }
-    ${borderGradient}
-`;
-
-const DropDownContainer = styled.div`
-    position: absolute;
-    display: none;
-    margin-top: 5px;
-    background-color: #000000;
-`;
-
-const StyledDropDown = styled.div`
-    position: relative;
-    display: inline-block;
-    box-sizing: border-box;
-    padding: 5px;
-    &:hover > ${/* sc-sel */ DropDownContainer} {
-        display: block;
-    }
-    ${borderGradient}
-`;
-
-const Arrow = styled.i`
-    position: relative;
-    border: solid #FFFFFF;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-    margin-left: 5px;
-    top: -3px;
-`;
-
-function DropDown ({ networks, selectedNetwork, setNetwork }) {
-    // TODO: handle hasProvider properly
-    const switchNetwork = async (network) => {
-        try {
-            await ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{ chainId: network.chainId }],
-            });
-
-            setNetwork(network);
-        } catch (switchError) {
-            // This error code indicates that the chain has not been added to MetaMask.
-            if (switchError.code === 4902) {
-                try {
-                    await ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: network.chainId,
-                                chainName: network.chainName,
-                                rpcUrls: [network.rpcUrl],
-                                nativeCurrency: {
-                                    symbol: network.currencyInfo.symbol,
-                                    name: network.currencyInfo.name,
-                                    decimals: network.currencyInfo.decimals,
-                                },
-                            },
-                        ],
-                    });
-                    setNetwork(network);
-                } catch (addError) {
-                    console.error(addError);
-                }
-            }
-            console.error(switchError);
-        }
-    };
+function DropDown () {
+    const { updateWsProvider } = useWsProvider();
+    const supportedNetworks = getSupportedNetworks();
+    // It's fine to access 0 index :)
+    const [currentNetwork, setCurrentNetwork] = useState(supportedNetworks[0]);
 
     useEffect(() => {
-        switchNetwork(selectedNetwork);
-    }, []);
+        const switchNetwork = async () => {
+            try {
+                await ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: currentNetwork.chainId }],
+                });
+            } catch (switchError) {
+            // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    chainId: currentNetwork.chainId,
+                                    chainName: currentNetwork.chainName,
+                                    rpcUrls: [currentNetwork.rpcUrl],
+                                    nativeCurrency: {
+                                        symbol: currentNetwork.currencyInfo.symbol,
+                                        name: currentNetwork.currencyInfo.name,
+                                        decimals: currentNetwork.currencyInfo.decimals,
+                                    },
+                                },
+                            ],
+                        });
+                    } catch (addError) {
+                        console.error(addError);
+                    }
+                }
+                console.error(switchError);
+            }
+        };
+
+        switchNetwork();
+        updateWsProvider(currentNetwork.websocketUrl);
+    }, [currentNetwork]);
 
     return (
         <StyledDropDown>
-            {selectedNetwork.renderName}
+            {currentNetwork.renderName}
             <Arrow />
             <DropDownContainer>
-                {networks.map((network, i) => (
-                    <DropDownItem key={i} onClick={async () =>{
-                        // TODO: handle hasProvider properly
-                        await switchNetwork(network);
+                {supportedNetworks.map((network, i) => (
+                    <DropDownItem key={i} onClick={() =>{
+                        setCurrentNetwork(network);
                     }}>
                         {network.renderName}
                     </DropDownItem>
