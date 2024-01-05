@@ -1,6 +1,8 @@
 import { Button } from './buttons';
 import { FlexBox, RowFlexBox, ColumnFlexBox } from './containers';
-import borderGradient from './css';
+import { borderGradient, fixedCenterPosition } from './css';
+import { Loader, MaskBackground } from './loader';
+import { MessageBox } from './messageBox';
 
 export {
     Button,
@@ -8,4 +10,8 @@ export {
     RowFlexBox,
     ColumnFlexBox,
     borderGradient,
+    Loader,
+    MaskBackground,
+    fixedCenterPosition,
+    MessageBox,
 };

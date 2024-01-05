@@ -9,7 +9,7 @@ export function WsContextProvider({ children }) {
     const [currentWsUrl, setCurrentWsUrl] = useState(supportedNetworks[0].websocketUrl);
     const [wsProvider, setWsProvider] = useState();
     const [error, setError] = useState();
-    const [connecting, setConnecting] = useState(true);
+    const [connecting, setConnecting] = useState(false);
 
     const updateWsProvider = useCallback((url) => {
         setConnecting(true);
@@ -22,9 +22,14 @@ export function WsContextProvider({ children }) {
         provider.on('connect', () => {
             setConnecting(false);
         });
-        // TODO: handle properly
         provider.on('error', (e) => {
-            setError(e.message);
+            // TODO: if emits error event when listening contract logs, detach each cases.
+            if (e.message) {
+                setError(e.message);
+            } else {
+                setError(`Failed to connect to ${e.currentTarget.url}`);
+            }
+            setConnecting(false);
         });
 
         setWsProvider(provider);
