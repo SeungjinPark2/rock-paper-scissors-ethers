@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { getSupportedNetworks } from '../ethereum';
 import { WebSocketProvider } from 'web3';
 
@@ -7,9 +7,9 @@ const WsProvider = createContext({});
 export function WsContextProvider({ children }) {
     const supportedNetworks = getSupportedNetworks();
     const [currentWsUrl, setCurrentWsUrl] = useState(supportedNetworks[0].websocketUrl);
-    const [wsProvider, setWsProvider] = useState();
-    const [error, setError] = useState();
     const [connecting, setConnecting] = useState(false);
+    const [error, setError] = useState();
+    const wsProvider = useRef();
 
     const updateWsProvider = useCallback((url) => {
         setConnecting(true);
@@ -22,6 +22,7 @@ export function WsContextProvider({ children }) {
         provider.on('connect', () => {
             setConnecting(false);
         });
+
         provider.on('error', (e) => {
             // TODO: if emits error event when listening contract logs, detach each cases.
             if (e.message) {
@@ -32,7 +33,7 @@ export function WsContextProvider({ children }) {
             setConnecting(false);
         });
 
-        setWsProvider(provider);
+        wsProvider.current = provider;
         
         return () => {
             provider.removeAllListeners();
@@ -42,7 +43,7 @@ export function WsContextProvider({ children }) {
     return (
         <WsProvider.Provider
             value={{
-                wsProvider,
+                wsProvider: wsProvider.current,
                 currentWsUrl,
                 error,
                 connecting,

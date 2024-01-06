@@ -45,7 +45,7 @@ export function MetamaskContextProvider({ children }) {
 
     useEffect(() => {
         const getProvider = async () => {
-            const provider = await detectEthereumProvider({ silent: true });
+            const provider = await detectEthereumProvider({ silent: true, mustBeMetaMask: true });
             setHasProvider(Boolean(provider));
 
             if (provider) {
@@ -53,6 +53,8 @@ export function MetamaskContextProvider({ children }) {
                 setWeb3(new Web3(provider));
                 window.ethereum.on('accountsChanged', updateWallet);
                 window.ethereum.on('chainChanged', updateWalletAndAccounts);
+            } else {
+                setErrorMessage('No MetaMask wallet was found. Please install MetaMask first.');
             }
         };
 
