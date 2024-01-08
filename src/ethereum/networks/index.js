@@ -10,7 +10,10 @@ const networks = [
         },
         websocketUrl: 'ws://localhost:8545',
         rpcUrl: 'http://localhost:8545',
-        contractAddress: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+        contractAddress: {
+            GameFactory: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+            Game: '',
+        },
     },
     {
         chainId: '0x13881',
@@ -23,7 +26,10 @@ const networks = [
         },
         websocketUrl: 'wss://rpc-mumbai.matic.today',
         rpcUrl: 'wss://polygon-mumbai-bor.publicnode.com',
-        contractAddress: '',
+        contractAddress: {
+            GameFactory: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+            Game: '',
+        },
     },
 ];
 

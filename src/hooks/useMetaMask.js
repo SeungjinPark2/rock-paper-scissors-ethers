@@ -15,7 +15,6 @@ export function MetamaskContextProvider({ children }) {
     const clearError = () => setErrorMessage('');
 
     const [wallet, setWallet] = useState(disconnectedState);
-    const [web3, setWeb3] = useState();
 
     const _updateWallet = useCallback(async (providedAccounts) => {
         const accounts = providedAccounts || await window.ethereum.request(
@@ -50,7 +49,6 @@ export function MetamaskContextProvider({ children }) {
 
             if (provider) {
                 updateWalletAndAccounts();
-                setWeb3(new Web3(provider));
                 window.ethereum.on('accountsChanged', updateWallet);
                 window.ethereum.on('chainChanged', updateWalletAndAccounts);
             } else {
@@ -89,7 +87,6 @@ export function MetamaskContextProvider({ children }) {
                 error: !!errorMessage,
                 errorMessage,
                 isConnecting,
-                web3,
                 connectMetaMask,
                 clearError,
             }}

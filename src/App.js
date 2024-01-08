@@ -2,15 +2,15 @@ import './App.css';
 import { MetamaskContextProvider } from './hooks/useMetaMask';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
-import { WsContextProvider } from './hooks/useWsProvider';
+import { NetworkProvider } from './hooks/useEthereum';
 
 function App() {
     return (
         <div className='app'>
             <MetamaskContextProvider>
-                <WsContextProvider>
+                <NetworkProvider>
                     <RouterProvider router={router} />
-                </WsContextProvider>
+                </NetworkProvider>
             </MetamaskContextProvider>
         </div>
     );

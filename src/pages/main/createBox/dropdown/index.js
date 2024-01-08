@@ -1,20 +1,17 @@
-import { useEffect, useState } from 'react';
-import { getSupportedNetworks } from '../../../../ethereum';
+import { useEffect } from 'react';
 import { Arrow, DropDownContainer, DropDownItem, StyledDropDown } from './components';
-import { useWsProvider } from '../../../../hooks/useWsProvider';
+import { useNetworkUpdateContext, useNetworkValueContext } from '../../../../hooks/useEthereum';
 
 function DropDown () {
-    const { updateWsProvider } = useWsProvider();
-    const supportedNetworks = getSupportedNetworks();
-    // It's fine to access 0 index :)
-    const [currentNetwork, setCurrentNetwork] = useState(supportedNetworks[0]);
+    const { network, supportedNetworks } = useNetworkValueContext();
+    const { updateNetwork } = useNetworkUpdateContext();
 
     useEffect(() => {
         const switchNetwork = async () => {
             try {
                 await ethereum.request({
                     method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: currentNetwork.chainId }],
+                    params: [{ chainId: network.chainId }],
                 });
             } catch (switchError) {
             // This error code indicates that the chain has not been added to MetaMask.
@@ -24,13 +21,13 @@ function DropDown () {
                             method: 'wallet_addEthereumChain',
                             params: [
                                 {
-                                    chainId: currentNetwork.chainId,
-                                    chainName: currentNetwork.chainName,
-                                    rpcUrls: [currentNetwork.rpcUrl],
+                                    chainId: network.chainId,
+                                    chainName: network.chainName,
+                                    rpcUrls: [network.rpcUrl],
                                     nativeCurrency: {
-                                        symbol: currentNetwork.currencyInfo.symbol,
-                                        name: currentNetwork.currencyInfo.name,
-                                        decimals: currentNetwork.currencyInfo.decimals,
+                                        symbol: network.currencyInfo.symbol,
+                                        name: network.currencyInfo.name,
+                                        decimals: network.currencyInfo.decimals,
                                     },
                                 },
                             ],
@@ -44,19 +41,18 @@ function DropDown () {
         };
 
         switchNetwork();
-        updateWsProvider(currentNetwork.websocketUrl);
-    }, [currentNetwork]);
+    }, [network]);
 
     return (
         <StyledDropDown>
-            {currentNetwork.renderName}
+            {network.renderName}
             <Arrow />
             <DropDownContainer>
-                {supportedNetworks.map((network, i) => (
+                {supportedNetworks.map((_network, i) => (
                     <DropDownItem key={i} onClick={() =>{
-                        setCurrentNetwork(network);
+                        updateNetwork(_network);
                     }}>
-                        {network.renderName}
+                        {_network.renderName}
                     </DropDownItem>
                 ))}
             </DropDownContainer>
