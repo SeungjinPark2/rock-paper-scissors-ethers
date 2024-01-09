@@ -1,7 +1,7 @@
 import Main from './main';
-import { MetamaskNotFound } from './error';
+import ErrorPage from './error';
 
 export {
     Main,
-    MetamaskNotFound,
+    ErrorPage
 };

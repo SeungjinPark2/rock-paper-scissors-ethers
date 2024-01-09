@@ -12,6 +12,7 @@ export function NetworkProvider({ children }) {
     const [error, setError] = useState();
     const [wsProvider, setWsProvider] = useState();
 
+    // TODO: setConnecting to true will not be back to false if network state same as before.
     const updateNetwork = useCallback((network) => {
         setConnecting(true);
         setNetwork(network);

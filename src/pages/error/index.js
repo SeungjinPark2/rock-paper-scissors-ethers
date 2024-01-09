@@ -1,5 +1,17 @@
-import { MetamaskNotFound } from './metamask';
+import styled from 'styled-components';
+import { MaskBackground } from '../../components';
 
-export {
-    MetamaskNotFound,
-};
+const ErrorContainer = styled.div`
+    font-size: 1.8em;
+    color: #ffffff;
+`;
+
+export default function ErrorPage({ msg }) {
+    return (
+        <MaskBackground>
+            <ErrorContainer>
+                { msg }
+            </ErrorContainer>
+        </MaskBackground>
+    );
+}
