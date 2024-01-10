@@ -1,9 +1,18 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMetaMask } from '../../../hooks/useMetaMask';
 import { useContract } from '../../../hooks/useContract';
 import { isAddress } from 'web3-validator';
 import { useNetworkValueContext } from '../../../hooks/useEthereum';
+import { Loader, MaskBackground } from '../../../components';
+import ParticipateDialog from './participteDialog';
+
+const initialPlayer = {
+    player: '',
+    commit: '',
+    phase: 0,
+    betDone: false,
+};
 
 function GameBoard() {
     const { wsProvider } = useNetworkValueContext();
@@ -12,12 +21,21 @@ function GameBoard() {
     const { wallet } = useMetaMask();
     const navigate = useNavigate();
 
-    const userAddr = useMemo(() => wallet.accounts[0], [wallet]);
+    const [player1, setPlayer1] = useState(initialPlayer);
+    const [player2, setPlayer2] = useState(initialPlayer);
+    const [betSize, setBetSize] = useState(0);
+    const [phase, setPhase] = useState(0);
+    const [phaseExpiration, setPhaseExpiration] = useState(0);
+    const [userStatus, setUserStatus] = useState/*<'creator' | 'pending' | 'participant' | 'observer'>*/(false);
 
-    const [player1, setPlayer1] = useState();
-    const [player2, setPlayer2] = useState();
-    const self = useRef();
-    const opponent = useRef();
+    const userAddr = useMemo(() => wallet.accounts[0], [wallet]);
+    const loaded = useMemo(() => 
+        betSize != null
+        && phase != null
+        && phaseExpiration != null
+        && userStatus != null
+        && player1.player !== '',
+    [betSize, phase, phaseExpiration, userStatus, player1]);
 
     // TODO: 404 페이지가 더 적절할까?
     if (isAddress(address) === false) {
@@ -26,59 +44,69 @@ function GameBoard() {
         Game.options.address = address;
     }
 
-    // guard logic: 게임의참여자가 아니라면 팅궈낸다.
-    // TODO: 402 페이지가 더 적절할까?
     useEffect(() => {
-        if (player1 != null && player2 != null && userAddr != null) {
-            if (player1.player.toLowerCase() === userAddr) {
-                self.current = player1;
-                opponent.current = player2;
-            } else if (player2.player.toLowerCase() === userAddr) {
-                self.current = player2;
-                opponent.current = player1;
+        if ((player1 !== '' || player2 !== '') && userAddr != null) {
+            if (player1.player.toLocaleLowerCase() === userAddr) {
+                setUserStatus('creator');
+            } else if (player2.player.toLocaleLowerCase() === '0x0000000000000000000000000000000000000000') {
+                setUserStatus('pending');
+            } else if (player2.player.toLocaleLowerCase() === userAddr) {
+                setUserStatus('participant');
             } else {
-                navigate('/', { replace: true });
+                setUserStatus('observer');
             }
         }
     }, [player1, player2, userAddr]);
 
     useEffect(() => {
-        if (wsProvider != null && wallet.accounts.length > 0) {
-            Game.setProvider(wsProvider);
-    
-            // 처음 실행 시 player 들을 초기화 해야한다. 나머지는 event 로 처리하도록 한다.
-            if (player1 == null || player2 == null) {
-                Game.methods.player1().call()
-                    .then(data => { setPlayer1(data); });
-                Game.methods.player2().call()
-                    .then(data => { setPlayer2(data); });
-            }
+        let logSubscription = null;
 
-            /**
-             * 여기서 game contract 와 관련된 events 들을 수신하고 local state 로 쓰기
-             * players, phase, expiration, ...
-             */
+        if (wsProvider != null) {
+            if (Game.currentProvider == null) {
+                Game.setMaxListenerWarningThreshold(20);
+                Game.setProvider(wsProvider);
+            }
+            Game.methods.player1().call()
+                .then(setPlayer1);
+            Game.methods.player2().call()
+                .then(setPlayer2);
+            Game.methods.betSize().call()
+                .then(setBetSize);
+            Game.methods.phase().call()
+                .then(setPhase);
+            Game.methods.phaseExpiration().call()
+                .then(setPhaseExpiration);
+
+            logSubscription = Game.events.allEvents();
+
+            logSubscription.on('data', (event) => {
+                console.log(event);
+            });
         }
 
         return () => {
-
+            Game.removeAllListeners();
+            logSubscription?.unsubscribe();
         };
-    }, [wallet, wsProvider]);
+    }, [wsProvider]);
 
-    return (
-        <>
-            <div>
-                {
-                    self.current.player
-                }
-            </div>
-            <div>
-                {
-                    opponent.current.player
-                }
-            </div>
-        </>
-    );
+    if (loaded === false) {
+        return (
+            <MaskBackground>
+                <Loader />
+            </MaskBackground>
+        );
+    } else if (userStatus === 'pending') {
+        return (
+            <ParticipateDialog betSize={betSize} creator={player1.player} Game={Game} />
+        );
+    } else {
+        return (
+            <>
+                this is main
+            </>
+        );
+    }
 }
 
 export default GameBoard;

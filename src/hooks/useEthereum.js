@@ -9,7 +9,7 @@ export function NetworkProvider({ children }) {
     const supportedNetworks = useMemo(() => getSupportedNetworks(), []);
     const [network, setNetwork] = useState(supportedNetworks[0]);
     const [connecting, setConnecting] = useState(false);
-    const [error, setError] = useState();
+    const [networkErrorMsg, setNetworkErrorMsg] = useState();
     const [wsProvider, setWsProvider] = useState();
 
     // TODO: setConnecting to true will not be back to false if network state same as before.
@@ -28,9 +28,9 @@ export function NetworkProvider({ children }) {
         provider.on('error', (e) => {
             // TODO: if emits error event when listening contract logs, detach each cases.
             if (e.message) {
-                setError(e.message);
+                setNetworkErrorMsg(e.message);
             } else {
-                setError(`Failed to connect to ${e.currentTarget.url}`);
+                setNetworkErrorMsg(`Failed to connect to ${e.currentTarget.url}`);
             }
             setConnecting(false);
         });
@@ -45,7 +45,7 @@ export function NetworkProvider({ children }) {
     return (
         <NetworkUpdateContext.Provider value={{ updateNetwork }}>
             <NetworkValueContext.Provider 
-                value={{ network, connecting, error, wsProvider: wsProvider, supportedNetworks }}
+                value={{ network, connecting, networkErrorMsg, wsProvider: wsProvider, supportedNetworks }}
             >
                 {children}
             </NetworkValueContext.Provider>

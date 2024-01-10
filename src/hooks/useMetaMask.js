@@ -10,9 +10,9 @@ const MetaMaskContext = createContext({});
 export function MetamaskContextProvider({ children }) {
     const [hasProvider, setHasProvider] = useState(null);
     const [isConnecting, setIsConnecting] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [metamaskErrorMsg, setMetaMaskErrorMsg] = useState('');
 
-    const clearError = () => setErrorMessage('');
+    const clearError = () => setMetaMaskErrorMsg('');
 
     const [wallet, setWallet] = useState(disconnectedState);
 
@@ -51,8 +51,6 @@ export function MetamaskContextProvider({ children }) {
                 updateWalletAndAccounts();
                 window.ethereum.on('accountsChanged', updateWallet);
                 window.ethereum.on('chainChanged', updateWalletAndAccounts);
-            } else {
-                setErrorMessage('No MetaMask wallet was found. Please install MetaMask first.');
             }
         };
 
@@ -74,7 +72,7 @@ export function MetamaskContextProvider({ children }) {
             clearError();
             updateWallet(accounts);
         } catch(err) {
-            setErrorMessage(err.message);
+            setMetaMaskErrorMsg(err.message);
         }
         setIsConnecting(false);
     };
@@ -84,9 +82,10 @@ export function MetamaskContextProvider({ children }) {
             value={{
                 wallet,
                 hasProvider,
-                error: !!errorMessage,
-                errorMessage,
+                error: !!metamaskErrorMsg,
+                metamaskErrorMsg,
                 isConnecting,
+                setIsConnecting,
                 connectMetaMask,
                 clearError,
             }}

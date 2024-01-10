@@ -1,5 +1,5 @@
 import DropDown from './dropdown';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, CreateBoxCard, Input, Label, Wrap } from './components';
 import Web3 from 'web3';
 import { useMetaMask } from '../../../hooks/useMetaMask';
@@ -10,7 +10,16 @@ function CreateBox() {
     const [betSize, setBetSize] = useState(0);
     // TODO: If metamask is not installed, prevent.
     const { GameFactory } = useContract();
-    GameFactory.setProvider(window.ethereum);
+
+    useEffect(() => {
+        if (GameFactory.currentProvider == null) {
+            GameFactory.setProvider(window.ethereum);
+        }
+
+        return () => {
+            GameFactory.removeAllListeners();
+        };
+    }, []);
 
     const createGame = useCallback(async () => {
         try {

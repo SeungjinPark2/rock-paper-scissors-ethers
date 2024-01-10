@@ -5,7 +5,7 @@ import { useNetworkValueContext } from '../../hooks/useEthereum';
 import { useEffect, useState } from 'react';
 import { useContract } from '../../hooks/useContract';
 import { useMetaMask } from '../../hooks/useMetaMask';
-import Web3 from 'web3';
+import { eth } from 'web3';
 import ErrorPage from '../error';
 
 const Container = styled(ColumnFlexBox)`
@@ -17,22 +17,24 @@ const Container = styled(ColumnFlexBox)`
 
 function Main() {
     const [closed, setClosed] = useState(false);
-    const { wallet, hasProvider } = useMetaMask();
-    const { wsProvider, connecting, error, network } = useNetworkValueContext();
+    const { wallet } = useMetaMask();
+    const { wsProvider, connecting, networkErrorMsg } = useNetworkValueContext();
     const { GameFactory } = useContract();
     const navigate = useNavigate();
 
-    // TODO: make it Context
-    // if error message is changed, set closed to false to render error box
+    // // TODO: make it Context
+    // // if error message is changed, set closed to false to render error box
     useEffect(() => {
         setClosed(false);
-    }, [error]);
+    }, [networkErrorMsg]);
 
     useEffect(() => {
         let subscription = null;
 
         if (wsProvider != null && wallet.accounts.length > 0) {
-            GameFactory.setProvider(wsProvider);
+            if (GameFactory.currentProvider == null) {
+                GameFactory.setProvider(wsProvider);
+            }
             subscription = GameFactory.events.NewGame({ 
                 // If we don't filter, NewGame event of other players will be captured on current user's page.
                 filter: {
@@ -41,40 +43,35 @@ function Main() {
             });
     
             subscription.on('data', (event) => {
-                const gameAddress = new Web3().eth.abi.decodeParameter('address', event.data);
+                const gameAddress = eth.abi.decodeParameter('address', event.data);
                 navigate(`in-game/${gameAddress}`);
             });
         }
 
         return () => {
+            GameFactory.removeAllListeners();
             subscription?.unsubscribe();
         };
-    }, [network]);
+    }, [wsProvider, wallet]);
 
-    if (hasProvider === false) {
-        return (
-            <ErrorPage msg={'MetaMask is not found, please install MetaMask wallet first ;)'}/>
-        );
-    } else {
-        return (
-            <Container>
-                {
-                    // error is truthy and closed is falsy
-                    (!!error && !closed) && (
-                        <MessageBox message={error} setClosed={setClosed}/>
-                    )
-                }
-                {
-                    connecting && (
-                        <MaskBackground>
-                            <Loader />
-                        </MaskBackground>
-                    )
-                }
-                <Outlet />
-            </Container>
-        );
-    }
+    return (
+        <Container>
+            {
+                // error is truthy and closed is falsy
+                (!!networkErrorMsg && !closed) && (
+                    <MessageBox message={networkErrorMsg} setClosed={setClosed}/>
+                )
+            }
+            {
+                connecting && (
+                    <MaskBackground>
+                        <Loader />
+                    </MaskBackground>
+                )
+            }
+            <Outlet />
+        </Container>
+    );
 }
 
 export default Main;
