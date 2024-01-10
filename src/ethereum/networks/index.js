@@ -12,7 +12,6 @@ const networks = [
         rpcUrl: 'http://localhost:8545',
         contractAddress: {
             GameFactory: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
-            Game: '',
         },
     },
     {
@@ -28,7 +27,6 @@ const networks = [
         rpcUrl: 'wss://polygon-mumbai-bor.publicnode.com',
         contractAddress: {
             GameFactory: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
-            Game: '',
         },
     },
 ];

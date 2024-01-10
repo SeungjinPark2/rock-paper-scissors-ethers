@@ -7,7 +7,7 @@ export function useContract() {
     const { network } = useNetworkValueContext();
 
     const contracts = useMemo(() => ({
-        Game: new Contract(GameAbi, network.contractAddress.Game),
+        Game: new Contract(GameAbi),
         GameFactory: new Contract(GameFactoryAbi, network.contractAddress.GameFactory),
     }), []);
 
