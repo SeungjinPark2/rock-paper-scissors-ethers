@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ColumnFlexBox, borderGradient } from '../../../../components';
+import { ColumnFlexBox, borderGradient } from '../../../../../components';
 
 export const PhaseContainer = styled(ColumnFlexBox)`
     position: fixed;

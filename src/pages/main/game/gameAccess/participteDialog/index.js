@@ -1,11 +1,11 @@
 import { utils } from 'web3';
-import { ButtonWithBorder } from '../../../../components';
+import { ButtonWithBorder } from '../../../../../components';
 import { ParticipateDialogBox } from './components';
-import { useContract } from '../../../../hooks/useContract';
+import { useContract } from '../../../../../hooks/useContract';
 import { useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'web3-validator';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMetaMask } from '../../../../hooks/useMetaMask';
+import { useMetaMask } from '../../../../../hooks/useMetaMask';
 
 function ParticipateDialog ({ betSize, creator, setUserStatus }) {
     const { address } = useParams();

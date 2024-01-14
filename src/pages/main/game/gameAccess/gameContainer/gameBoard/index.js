@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { Pane, PlayerSidePane, Splitter } from './components';
 
-function GamePane({ player1, player2, userAddr }) {
+function GameBoard({ player1, player2, userAddr }) {
     // const [self, setSelf] = useState(() => {
     //     return player1;
     // });
@@ -23,4 +22,4 @@ function GamePane({ player1, player2, userAddr }) {
     );
 }
 
-export default GamePane;
+export default GameBoard;

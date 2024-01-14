@@ -1,15 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMetaMask } from '../../../hooks/useMetaMask';
 import { useContract } from '../../../hooks/useContract';
 import { isAddress } from 'web3-validator';
 import { useNetworkValueContext } from '../../../hooks/useEthereum';
-import { Loader, MaskBackground } from '../../../components';
-import ParticipateDialog from './participteDialog';
-import GamePane from './gamePane';
 import { eth } from 'web3';
 import { findEvent } from '../../../ethereum';
-import PhaseBox from './phaseBox';
 
 const initialPlayer = {
     player: '',
@@ -18,7 +14,10 @@ const initialPlayer = {
     betDone: false,
 };
 
-function GameBoard() {
+const GameUpdateContext = createContext();
+const GameValueContext = createContext();
+
+export function GameProvider({ children }) {
     const { wsProvider } = useNetworkValueContext();
     const { address } = useParams();
     const { Game } = useContract();
@@ -90,7 +89,7 @@ function GameBoard() {
                     setPlayer1(player1);
                     setPlayer2(player2);
                 } else {
-                    
+                    console.log(event);
                 }
             });
         }
@@ -101,32 +100,39 @@ function GameBoard() {
         };
     }, [wsProvider]);
 
-    if (loaded === false) {
-        return (
-            <MaskBackground>
-                <Loader />
-            </MaskBackground>
-        );
-    } else if (userStatus === 'pending') {
-        return (
-            <ParticipateDialog
-                betSize={betSize}
-                creator={player1.player}
-                setUserStatus={setUserStatus}
-            />
-        );
-    } else {
-        return (
-            <>
-                <PhaseBox phase={phase} />
-                <GamePane
-                    player1={player1}
-                    player2={player2}
-                    userAddr={userAddr}
-                />
-            </>
-        );
-    }
+    return (
+        <GameUpdateContext.Provider value={{ setUserStatus }}>
+            <GameValueContext.Provider
+                value={{
+                    player1,
+                    player2,
+                    betSize,
+                    phase,
+                    phaseExpiration,
+                    userStatus,
+                    loaded
+                }}
+            >
+                { children }
+            </GameValueContext.Provider>
+        </GameUpdateContext.Provider>
+    );
 }
 
-export default GameBoard;
+export function useGameUpdate() {
+    const context = useContext(GameUpdateContext);
+    if (context === undefined) {
+        throw new Error('useGameUpdate must be used within a "GameProvider"');
+    }
+
+    return context;
+}
+
+export function useGameValue() {
+    const context = useContext(GameValueContext);
+    if (context === undefined) {
+        throw new Error('useGameValue must be used within a "GameProvider"');
+    }
+
+    return context;
+}
