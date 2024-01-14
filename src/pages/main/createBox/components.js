@@ -11,17 +11,6 @@ export const CreateBoxCard = styled(ColumnFlexBox)`
     ${borderGradient}
 `;
 
-export const Button = styled.button`
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    background: transparent;
-    color: #FFFFFF;
-    font-size: large;
-    cursor: pointer;
-    ${borderGradient}
-`;
-
 export const Label = styled.label``;
 
 export const Input = styled.input`

@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import { borderGradient } from '../css';
 
-export const Button = styled.button`
-    padding: 5px;
-    border: none;
-    background-color: #FAFAFA;
+export const ButtonWithBorder = styled.button`
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    background: transparent;
+    color: #FFFFFF;
+    font-size: large;
     cursor: pointer;
-    &:hover {
-        background-color: #B8B8B8;
-    }
+    ${borderGradient}
 `;

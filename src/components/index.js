@@ -1,11 +1,11 @@
-import { Button } from './buttons';
+import { ButtonWithBorder } from './buttons';
 import { FlexBox, RowFlexBox, ColumnFlexBox } from './containers';
 import { borderGradient, fixedCenterPosition } from './css';
 import { Loader, MaskBackground } from './loader';
 import { MessageBox } from './messageBox';
 
 export {
-    Button,
+    ButtonWithBorder,
     FlexBox,
     RowFlexBox,
     ColumnFlexBox,

@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { useContract } from '../../hooks/useContract';
 import { useMetaMask } from '../../hooks/useMetaMask';
 import { eth } from 'web3';
-import ErrorPage from '../error';
 
 const Container = styled(ColumnFlexBox)`
     justify-content: center;

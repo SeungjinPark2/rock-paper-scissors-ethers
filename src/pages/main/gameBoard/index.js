@@ -6,11 +6,15 @@ import { isAddress } from 'web3-validator';
 import { useNetworkValueContext } from '../../../hooks/useEthereum';
 import { Loader, MaskBackground } from '../../../components';
 import ParticipateDialog from './participteDialog';
+import GamePane from './gamePane';
+import { eth } from 'web3';
+import { findEvent } from '../../../ethereum';
+import PhaseBox from './phaseBox';
 
 const initialPlayer = {
     player: '',
     commit: '',
-    phase: 0,
+    hand: 0,
     betDone: false,
 };
 
@@ -66,6 +70,7 @@ function GameBoard() {
                 Game.setMaxListenerWarningThreshold(20);
                 Game.setProvider(wsProvider);
             }
+
             Game.methods.player1().call()
                 .then(setPlayer1);
             Game.methods.player2().call()
@@ -77,10 +82,16 @@ function GameBoard() {
             Game.methods.phaseExpiration().call()
                 .then(setPhaseExpiration);
 
-            logSubscription = Game.events.allEvents();
-
+            logSubscription = Game.events.allEvents();            
             logSubscription.on('data', (event) => {
-                console.log(event);
+                if (event.event === 'UpdatePlayers') {
+                    const eventAbi = findEvent('UpdatePlayers');
+                    const { player1, player2 } = eth.abi.decodeLog(eventAbi.inputs, event.data, []);
+                    setPlayer1(player1);
+                    setPlayer2(player2);
+                } else {
+                    
+                }
             });
         }
 
@@ -98,12 +109,21 @@ function GameBoard() {
         );
     } else if (userStatus === 'pending') {
         return (
-            <ParticipateDialog betSize={betSize} creator={player1.player} Game={Game} />
+            <ParticipateDialog
+                betSize={betSize}
+                creator={player1.player}
+                setUserStatus={setUserStatus}
+            />
         );
     } else {
         return (
             <>
-                this is main
+                <PhaseBox phase={phase} />
+                <GamePane
+                    player1={player1}
+                    player2={player2}
+                    userAddr={userAddr}
+                />
             </>
         );
     }

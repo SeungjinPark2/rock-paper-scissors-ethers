@@ -1,9 +1,10 @@
 import DropDown from './dropdown';
 import { useCallback, useEffect, useState } from 'react';
-import { Button, CreateBoxCard, Input, Label, Wrap } from './components';
+import { CreateBoxCard, Input, Label, Wrap } from './components';
 import Web3 from 'web3';
 import { useMetaMask } from '../../../hooks/useMetaMask';
 import { useContract } from '../../../hooks/useContract';
+import { ButtonWithBorder } from '../../../components';
 
 function CreateBox() {
     const { wallet } = useMetaMask(); 
@@ -54,9 +55,9 @@ function CreateBox() {
                     </Label>
                 </Wrap>
             </div>
-            <Button onClick={async () =>{
+            <ButtonWithBorder onClick={async () =>{
                 await createGame();
-            }}>create a new game</Button>
+            }}>create a new game</ButtonWithBorder>
         </CreateBoxCard>
     );
 }
