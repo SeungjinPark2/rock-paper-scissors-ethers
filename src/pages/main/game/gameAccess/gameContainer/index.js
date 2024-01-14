@@ -3,14 +3,12 @@ import { RowFlexBox } from '../../../../../components';
 import GameBoard from './gameBoard';
 import GameController from './gameController';
 
-const GameContainerStyled = styled(RowFlexBox)`
-    justify-content: space-between;
-`;
+const GameContainerStyled = styled(RowFlexBox)``;
 
-function GameContainer({ player1, player2, userAddr }) {
+function GameContainer() {
     return (
         <GameContainerStyled>
-            <GameBoard player1={player1} player2={player2} userAddr={userAddr} />
+            <GameBoard />
             <GameController />
         </GameContainerStyled>
     );

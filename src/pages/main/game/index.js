@@ -1,10 +1,14 @@
 import GameAccess from './gameAccess';
-import { GameProvider } from './useGame';
+import { GameProvider } from './hooks/useGame';
+import { GameWithMetaMaskProvider } from './hooks/useGameWithMetaMask';
 
 function Game() {
     return (
         <GameProvider>
-            <GameAccess />
+            <GameWithMetaMaskProvider>
+                <GameAccess />
+
+            </GameWithMetaMaskProvider>
         </GameProvider>
     );
 }

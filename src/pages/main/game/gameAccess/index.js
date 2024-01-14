@@ -1,5 +1,5 @@
 import { Loader, MaskBackground } from '../../../../components';
-import { useGameUpdate, useGameValue } from '../useGame';
+import { useGameValue } from '../hooks/useGame';
 import GameContainer from './gameContainer';
 import ParticipateDialog from './participteDialog';
 
@@ -7,15 +7,7 @@ function GameAccess() {
     const {
         loaded,
         userStatus,
-        userAddr,
-        player1,
-        player2,
-        betSize
     } = useGameValue();
-
-    const {
-        setUserStatus
-    } = useGameUpdate();
     
     if (loaded === false) {
         return (
@@ -25,19 +17,11 @@ function GameAccess() {
         );
     } else if (userStatus === 'pending') {
         return (
-            <ParticipateDialog
-                betSize={betSize}
-                creator={player1.player}
-                setUserStatus={setUserStatus}
-            />
+            <ParticipateDialog />
         );
     } else {
         return (
-            <GameContainer
-                player1={player1}
-                player2={player2}
-                userAddr={userAddr}
-            />
+            <GameContainer />
         );
     }
 }

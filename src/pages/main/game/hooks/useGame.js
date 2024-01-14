@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMetaMask } from '../../../hooks/useMetaMask';
-import { useContract } from '../../../hooks/useContract';
+import { useMetaMask } from '../../../../hooks/useMetaMask';
+import { useContract } from '../../../../hooks/useContract';
 import { isAddress } from 'web3-validator';
-import { useNetworkValueContext } from '../../../hooks/useEthereum';
+import { useNetworkValueContext } from '../../../../hooks/useEthereum';
 import { eth } from 'web3';
-import { findEvent } from '../../../ethereum';
+import { findEvent } from '../../../../ethereum';
 
 const initialPlayer = {
     player: '',

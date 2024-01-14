@@ -1,9 +1,11 @@
+import { useGameValue } from '../../../hooks/useGame';
 import { Pane, PlayerSidePane, Splitter } from './components';
 
-function GameBoard({ player1, player2, userAddr }) {
-    // const [self, setSelf] = useState(() => {
-    //     return player1;
-    // });
+function GameBoard() {
+    const {
+        player1,
+        player2,
+    } = useGameValue();
 
     return (
         <Pane>

@@ -1,42 +1,21 @@
 import { utils } from 'web3';
 import { ButtonWithBorder } from '../../../../../components';
 import { ParticipateDialogBox } from './components';
-import { useContract } from '../../../../../hooks/useContract';
-import { useCallback, useEffect, useState } from 'react';
-import { isAddress } from 'web3-validator';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useMetaMask } from '../../../../../hooks/useMetaMask';
+import { useCallback, useState } from 'react';
+import { useGameUpdate, useGameValue } from '../../hooks/useGame';
+import { useGameWithMetaMask } from '../../hooks/useGameWithMetaMask';
 
-function ParticipateDialog ({ betSize, creator, setUserStatus }) {
-    const { address } = useParams();
-    const { wallet, hasProvider } = useMetaMask();
-    const { Game } = useContract();
-    const navigate = useNavigate();
+function ParticipateDialog () {
     const [ requestOnGoing, setrequestOnGoing ] = useState(false);
- 
-    if (isAddress(address) === false) {
-        navigate('/', { replace: true });
-    } else {
-        Game.options.address = address;
-    }
-
-    useEffect(() => {
-        if (wallet.accounts.length > 0 && hasProvider) {
-            if (Game.provider == null) {
-                Game.setProvider(window.ethereum);
-            }
-        }
-
-        return () => {
-            Game.removeAllListeners();
-        };
-    }, [hasProvider, wallet]);
+    const { player1, betSize } = useGameValue();
+    const { setUserStatus } = useGameUpdate();
+    const { GameWithMetaMask } = useGameWithMetaMask();
 
     const participate = useCallback(async () => {
         setrequestOnGoing(true);
 
         try {
-            const result = await Game.methods.participate().send({
+            const result = await GameWithMetaMask.methods.participate().send({
                 from: wallet.accounts[0],
             });
             console.log(result);
@@ -55,7 +34,7 @@ function ParticipateDialog ({ betSize, creator, setUserStatus }) {
             ) }
             <div>
                 <div>
-                    opponent: {creator}
+                    opponent: {player1.player}
                 </div>
                 <div>
                     betting size: {utils.fromWei(betSize, 'ether')} ether
