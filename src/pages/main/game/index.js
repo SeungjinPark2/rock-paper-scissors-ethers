@@ -7,7 +7,6 @@ function Game() {
         <GameProvider>
             <GameWithMetaMaskProvider>
                 <GameAccess />
-
             </GameWithMetaMaskProvider>
         </GameProvider>
     );

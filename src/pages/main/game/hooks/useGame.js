@@ -88,6 +88,13 @@ export function GameProvider({ children }) {
                     const { player1, player2 } = eth.abi.decodeLog(eventAbi.inputs, event.data, []);
                     setPlayer1(player1);
                     setPlayer2(player2);
+                } else if (event.event === 'PhaseChanged') {
+                    const eventAbi = findEvent('PhaseChanged');
+                    const { phase } = eth.abi.decodeLog(eventAbi.inputs, event.data, []);
+                    setPhase(phase);
+                    // phaseExpiration has no event so manually call to fetch
+                    Game.methods.phaseExpiration().call()
+                        .then(setPhaseExpiration);
                 } else {
                     console.log(event);
                 }
@@ -107,6 +114,7 @@ export function GameProvider({ children }) {
                     player1,
                     player2,
                     betSize,
+                    userAddr,
                     phase,
                     phaseExpiration,
                     userStatus,

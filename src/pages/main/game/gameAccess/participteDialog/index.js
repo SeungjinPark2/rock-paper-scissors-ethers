@@ -4,12 +4,14 @@ import { ParticipateDialogBox } from './components';
 import { useCallback, useState } from 'react';
 import { useGameUpdate, useGameValue } from '../../hooks/useGame';
 import { useGameWithMetaMask } from '../../hooks/useGameWithMetaMask';
+import { useMetaMask } from '../../../../../hooks/useMetaMask';
 
 function ParticipateDialog () {
     const [ requestOnGoing, setrequestOnGoing ] = useState(false);
     const { player1, betSize } = useGameValue();
     const { setUserStatus } = useGameUpdate();
     const { GameWithMetaMask } = useGameWithMetaMask();
+    const { wallet } = useMetaMask();
 
     const participate = useCallback(async () => {
         setrequestOnGoing(true);
