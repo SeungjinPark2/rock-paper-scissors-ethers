@@ -1,11 +1,11 @@
-import { Card, CardContainer } from './components';
+import { Card, CardContainer, CardImg } from './components';
 
 function Deck() {
     return (
         <CardContainer>
-            <Card>Rock</Card>
-            <Card>Scissors</Card>
-            <Card>Paper</Card>
+            <Card draggable={true}><CardImg $imgName={'rock.png'} $position={'relative'}/></Card>
+            <Card draggable={true}><CardImg $imgName={'paper.png'} $position={'relative'}/></Card>
+            <Card draggable={true}><CardImg $imgName={'scissors.png'} $position={'relative'}/></Card>
         </CardContainer>
     );
 }

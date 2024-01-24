@@ -3,9 +3,9 @@ import { PaperImgContainer, RockImgContainer, ScissorsImgContainer } from './com
 function BackgruondImgs() {
     return (
         <>
-            <RockImgContainer $imgName='rock.png' />
-            <PaperImgContainer $imgName='paper.png' />
-            <ScissorsImgContainer $imgName='scissors.png' />
+            <RockImgContainer $imgName='rock.png' $position='fixed' />
+            <PaperImgContainer $imgName='paper.png' $position='fixed' />
+            <ScissorsImgContainer $imgName='scissors.png' $position='fixed' />
         </>
     );
 }

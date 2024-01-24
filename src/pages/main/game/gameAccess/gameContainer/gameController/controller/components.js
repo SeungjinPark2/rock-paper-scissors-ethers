@@ -3,7 +3,7 @@ import { ColumnFlexBox, commonBorder } from '../../../../../../../components';
 
 export const ControllerContainer = styled(ColumnFlexBox)`
     box-sizing: border-box;
-    height: 300px;
+    /* height: 300px; */
     width: 300px;
     background-color: #000000;
     justify-content: space-between;
@@ -13,4 +13,9 @@ export const ControllerContainer = styled(ColumnFlexBox)`
 export const TimerContainer = styled.div`
     font-size: 1.8rem;
     text-align: center;
+    padding: 10px;
+`;
+
+export const PhaseWrap = styled.div`
+    padding: 15px;
 `;

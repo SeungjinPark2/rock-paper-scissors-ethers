@@ -1,13 +1,19 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useGameValue } from '../../../hooks/useGame';
-import { Pane, PlayerSidePane, Splitter } from './components';
+import { OpponentSpan, Pane, PlayerSidePane, Splitter } from './components';
+import OpponentBoard from './opponentBoard';
+import { useGameWithMetaMask } from '../../../hooks/useGameWithMetaMask';
 
 function GameBoard() {
     const {
         player1,
         player2,
         userAddr,
+        betSize,
+        expired,
     } = useGameValue();
+    const { GameWithMetaMask } = useGameWithMetaMask();
+    const [loading, setLoading] = useState(false);
 
     const {self, opponent} = useMemo(() => {
         const result = {
@@ -26,18 +32,29 @@ function GameBoard() {
         return result;
     }, [player1, player2, userAddr]);
 
+    if (expired === false && self != null && self.betDone === false && loading === false) {
+        setLoading(true);
+        GameWithMetaMask.methods.bet().send({
+            value: betSize,
+            from: userAddr,
+            gas: 60000, // hard coded...
+        }).catch(error => {
+            console.log(error);
+        }).finally(() => {
+            setLoading(false);
+        });
+    }
+
     return (
         <Pane>
             <PlayerSidePane>
-                {
-                    opponent.player
-                }
+                <OpponentSpan>opponent</OpponentSpan>
+                <OpponentBoard opponent={opponent} />
             </PlayerSidePane>
             <Splitter />
-            <PlayerSidePane>
-                {
-                    self.player
-                }
+            <PlayerSidePane onDragOver={(e) => {
+                e.preventDefault();
+            }}>  
             </PlayerSidePane>
         </Pane>
     );

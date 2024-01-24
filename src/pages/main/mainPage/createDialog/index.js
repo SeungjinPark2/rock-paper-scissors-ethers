@@ -1,9 +1,10 @@
 import { useMetaMask } from '../../../../hooks/useMetaMask';
 import { useContract } from '../../../../hooks/useContract';
 import DropDown from './dropdown';
-import { BetSizeWrap, Button, ButtonBox, ButtonLoader, Dialog, DialogBody, DropBoxWrap, Input } from './components';
+import { BetSizeWrap, Button, ButtonBox, Dialog, DropBoxWrap, Input } from './components';
 import { useCallback, useEffect, useState } from 'react';
 import Web3 from 'web3';
+import { ButtonLoader } from '../../../../components';
 
 function CreateDialog({ setOpened }) {
     const { wallet } = useMetaMask();
@@ -26,7 +27,7 @@ function CreateDialog({ setOpened }) {
             // TODO: extract Expiration
             const expiration = 60 * 5;
             const bet = Web3.utils.toWei(parseFloat(betSize), 'ether');
-            
+
             await GameFactory.methods.createGame(expiration, bet).send({
                 from: wallet.accounts[0],
             });

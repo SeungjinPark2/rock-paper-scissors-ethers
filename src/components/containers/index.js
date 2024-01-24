@@ -30,7 +30,7 @@ export const MaskBackground = styled(ColumnFlexBox)`
 `;
 
 export const ImgContainerDefault = styled.div`
-    position: fixed;
+    position: ${props => props.$position};
     background-image: url(/images/${props => props.$imgName});
     background-position: center;
 `;

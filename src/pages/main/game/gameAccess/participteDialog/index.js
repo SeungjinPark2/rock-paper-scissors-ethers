@@ -1,50 +1,52 @@
 import { utils } from 'web3';
-import { ButtonWithBorder } from '../../../../../components';
-import { ParticipateDialogBox } from './components';
+import { ButtonLoader, ButtonWithBorder } from '../../../../../components';
+import { ParticipateDialogBox, Wrap } from './components';
 import { useCallback, useState } from 'react';
 import { useGameUpdate, useGameValue } from '../../hooks/useGame';
 import { useGameWithMetaMask } from '../../hooks/useGameWithMetaMask';
 import { useMetaMask } from '../../../../../hooks/useMetaMask';
 
 function ParticipateDialog () {
-    const [ requestOnGoing, setrequestOnGoing ] = useState(false);
+    const [ loading, setLoading ] = useState(false);
     const { player1, betSize } = useGameValue();
     const { setUserStatus } = useGameUpdate();
     const { GameWithMetaMask } = useGameWithMetaMask();
     const { wallet } = useMetaMask();
 
     const participate = useCallback(async () => {
-        setrequestOnGoing(true);
+        setLoading(true);
 
         try {
-            const result = await GameWithMetaMask.methods.participate().send({
+            await GameWithMetaMask.methods.participate().send({
                 from: wallet.accounts[0],
             });
-            console.log(result);
         } catch (error) {
             console.error(error);
         }
 
-        setrequestOnGoing(false);
+        setLoading(false);
         setUserStatus('participant');
     }, [wallet]);
 
     return (
         <ParticipateDialogBox>
-            { requestOnGoing === true && (
-                <div>please change me to loading</div>
-            ) }
             <div>
-                <div>
+                <Wrap>
                     opponent: {player1.player}
-                </div>
-                <div>
+                </Wrap>
+                <Wrap>
                     betting size: {utils.fromWei(betSize, 'ether')} ether
-                </div>
+                </Wrap>
             </div>
-            <ButtonWithBorder onClick={() => {
-                participate();
-            }}>participate</ButtonWithBorder>
+            <ButtonWithBorder
+                onClick={() => {
+                    participate();
+                }}
+            >
+                {
+                    loading ? <ButtonLoader /> : <>PARTICIPATE GAME</>
+                }
+            </ButtonWithBorder>
         </ParticipateDialogBox>
     );
 }

@@ -1,25 +1,24 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useGameValue } from '../../../../hooks/useGame';
-import { ControllerContainer, TimerContainer } from './components';
+import { useGameUpdate, useGameValue } from '../../../../hooks/useGame';
+import { ControllerContainer, PhaseWrap, TimerContainer } from './components';
 import ButtonContainer from './buttonContainer';
 
 function Controller() {
-    const { phaseExpiration, phase } = useGameValue();
+    const { phaseExpiration, phase, expired } = useGameValue();
+    const { setExpired } = useGameUpdate();
     const [ remainedTime, setRemainedTime ] = useState(0);
-
+    
     useEffect(() => {
         let intervalRef;
 
         const calculatedRemained = parseInt(phaseExpiration) - Math.floor(Date.now() / 1000);
-        console.log(phaseExpiration);
-        console.log(calculatedRemained);
 
         if (calculatedRemained < 0) {
             setRemainedTime(0);
         } else {
             setRemainedTime(calculatedRemained);
             intervalRef = setInterval(() => {
-                setRemainedTime((time) => time - 1);
+                setRemainedTime((time) => time > 0 ? time - 1 : 0);
             }, 1000);
         }
 
@@ -29,6 +28,14 @@ function Controller() {
             }
         };
     }, [ phaseExpiration, phase ]);
+
+    useEffect(() => {
+        if (expired === true && remainedTime > 0) {
+            setExpired(false);
+        } else if (expired === false && remainedTime === 0){
+            setExpired(true);
+        }
+    }, [ remainedTime, expired ]);
 
     const { minutes, seconds } = useMemo(() => {
         const divided = Math.floor(remainedTime / 60);
@@ -51,19 +58,19 @@ function Controller() {
             return 'Bet';
         } else if (phase === 2n) {
             return 'Commit';
-        } else {
+        } else if (phase === 3n) {
             return 'Reveal';
         }
-    }, []);
+    }, [phase]);
 
     return (
         <ControllerContainer>
             <TimerContainer>
                 {minutes}:{seconds}
             </TimerContainer>
-            <div>
+            <PhaseWrap>
                 current phase: {phaseParsed}
-            </div>
+            </PhaseWrap>
             <ButtonContainer />
         </ControllerContainer>
     );

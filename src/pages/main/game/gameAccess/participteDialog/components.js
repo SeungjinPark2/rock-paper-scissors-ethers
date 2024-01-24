@@ -1,12 +1,15 @@
 import styled from 'styled-components';
-import { ColumnFlexBox, commonBorder } from '../../../../../components';
+import { ButtonWithBorder, commonBorder } from '../../../../../components';
 
-export const ParticipateDialogBox = styled(ColumnFlexBox)`
-    width: 300px;
-    height: 250px;
-    border-radius: 10px;
+export const ParticipateDialogBox = styled.div`
     padding: 15px;
     box-sizing: border-box;
-    justify-content: space-between;
     ${commonBorder}
+    & > ${/* sc-sel */ ButtonWithBorder} {
+        margin-top: 20px;
+    }
+`;
+
+export const Wrap = styled.div`
+ margin-bottom: 10px;
 `;

@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import { RowFlexBox, commonBorder } from '../../../../../../../components';
+import { ImgContainerDefault, RowFlexBox, commonBorder } from '../../../../../../../components';
 
-export const Card = styled.div`
+export const Card = styled(RowFlexBox)`
     width: 100px;
-    height: 130px;
+    height: 140px;
     box-sizing: border-box;
     ${commonBorder};
     background-color: #000000;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const CardContainer = styled(RowFlexBox)`
@@ -31,4 +33,11 @@ export const CardContainer = styled(RowFlexBox)`
     & > ${/* sc-sel */Card}:hover {
         margin-top: -10px;
     }
+`;
+
+export const CardImg = styled(ImgContainerDefault)`
+    background-size: 80px 80px;
+    translate: inherit;
+    width: 80px;
+    height: 80px;
 `;

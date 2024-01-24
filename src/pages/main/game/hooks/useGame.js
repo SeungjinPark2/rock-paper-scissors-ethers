@@ -30,6 +30,7 @@ export function GameProvider({ children }) {
     const [phase, setPhase] = useState(0);
     const [phaseExpiration, setPhaseExpiration] = useState(0);
     const [userStatus, setUserStatus] = useState/*<'creator' | 'pending' | 'participant' | 'observer'>*/(false);
+    const [expired, setExpired] = useState(true);
 
     const userAddr = useMemo(() => wallet.accounts[0], [wallet]);
     const loaded = useMemo(() => 
@@ -108,7 +109,7 @@ export function GameProvider({ children }) {
     }, [wsProvider]);
 
     return (
-        <GameUpdateContext.Provider value={{ setUserStatus }}>
+        <GameUpdateContext.Provider value={{ setUserStatus, setExpired }}>
             <GameValueContext.Provider
                 value={{
                     player1,
@@ -118,6 +119,7 @@ export function GameProvider({ children }) {
                     phase,
                     phaseExpiration,
                     userStatus,
+                    expired,
                     loaded
                 }}
             >
