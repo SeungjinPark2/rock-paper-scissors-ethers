@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { RowFlexBox, borderGradient } from '../../../../../../../components';
+import { RowFlexBox, commonBorder } from '../../../../../../../components';
 
 export const Card = styled.div`
     width: 100px;
     height: 130px;
     box-sizing: border-box;
-    ${borderGradient};
+    ${commonBorder};
     background-color: #000000;
 `;
 

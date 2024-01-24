@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import { commonBorder } from '../../../../../components';
 
 export const DropDownItem = styled.div`
     padding: 5px;
     &:first-child {
         border-bottom: none;
     }
-    border: 1px solid #FFFFFF;
+    ${commonBorder};
 `;
 
 export const DropDownContainer = styled.div`
@@ -23,7 +24,7 @@ export const StyledDropDown = styled.div`
     &:hover > ${/* sc-sel */ DropDownContainer} {
         display: block;
     }
-    border: 1px solid #FFFFFF;
+    ${commonBorder};
 `;
 
 export const Arrow = styled.i`

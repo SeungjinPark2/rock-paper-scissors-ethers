@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ColumnFlexBox, borderGradient } from '../../../../../../../components';
+import { ColumnFlexBox, commonBorder } from '../../../../../../../components';
 
 export const ControllerContainer = styled(ColumnFlexBox)`
     box-sizing: border-box;
@@ -7,7 +7,7 @@ export const ControllerContainer = styled(ColumnFlexBox)`
     width: 300px;
     background-color: #000000;
     justify-content: space-between;
-    ${borderGradient}
+    ${commonBorder}
 `;
 
 export const TimerContainer = styled.div`

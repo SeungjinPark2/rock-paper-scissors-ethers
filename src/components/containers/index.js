@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fixedCenterPosition } from '../css';
+import { commonBorder, fixedCenterPosition } from '../css';
 
 export const FlexBox = styled.div`
     display: flex;
@@ -15,7 +15,7 @@ export const RowFlexBox = styled(FlexBox)`
 
 export const DefaultDialog = styled(ColumnFlexBox)`
     box-sizing: border-box;
-    border: 1px solid #FFFFFF;
+    ${commonBorder};
     padding: 20px;
 `;
 

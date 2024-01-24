@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { ColumnFlexBox, borderGradient } from '../../../../../../components';
+import { ColumnFlexBox, commonBorder } from '../../../../../../components';
 
 export const Pane = styled(ColumnFlexBox)`
     height: 70vh;
     width: 500px;
-    ${borderGradient}
+    ${commonBorder}
 `;
 
 export const PlayerSidePane = styled.div`
@@ -14,6 +14,6 @@ export const PlayerSidePane = styled.div`
 
 export const Splitter = styled.div`
     flex-grow: 0;
-    ${borderGradient}
+    ${commonBorder}
     border-width: 2.5px;
 `;

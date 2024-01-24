@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { borderGradient } from '../css';
+import { commonBorder } from '../css';
 
 export const ButtonWithBorder = styled.button`
     width: 100%;
@@ -9,12 +9,12 @@ export const ButtonWithBorder = styled.button`
     color: #FFFFFF;
     font-size: large;
     cursor: pointer;
-    ${borderGradient}
+    ${commonBorder}
 `;
 
 export const ClearedButton = styled.button`
     background-color: transparent;
-    border: 1px solid #FFFFFF;
+    ${commonBorder};
     color: #FFFFFF;
     box-sizing: border-box;
     cursor: pointer;

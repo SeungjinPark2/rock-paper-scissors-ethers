@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ColumnFlexBox, borderGradient } from '../../../../../components';
+import { ColumnFlexBox, commonBorder } from '../../../../../components';
 
 export const ParticipateDialogBox = styled(ColumnFlexBox)`
     width: 300px;
@@ -8,5 +8,5 @@ export const ParticipateDialogBox = styled(ColumnFlexBox)`
     padding: 15px;
     box-sizing: border-box;
     justify-content: space-between;
-    ${borderGradient}
+    ${commonBorder}
 `;

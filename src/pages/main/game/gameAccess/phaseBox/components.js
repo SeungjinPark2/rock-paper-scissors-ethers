@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ColumnFlexBox, borderGradient } from '../../../../../components';
+import { ColumnFlexBox, commonBorder } from '../../../../../components';
 
 export const PhaseContainer = styled(ColumnFlexBox)`
     position: fixed;
@@ -7,7 +7,7 @@ export const PhaseContainer = styled(ColumnFlexBox)`
     right: 0;
     margin: 20px;
     
-    ${borderGradient}
+    ${commonBorder}
     & > div {
         padding: 10px 20px;
         text-align: center;
