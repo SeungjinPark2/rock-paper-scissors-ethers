@@ -1,3 +1,15 @@
+/* public 을 이렇게 접근하는 것이 맞나? */
+@font-face {
+    font-family: 'exo2';
+    src: url('/public/fonts/Exo2/Exo2-VariableFont_wght.ttf');
+    font-weight: 400;
+}
+
+* {
+    font-family: 'exo2';
+}
+
+/* reset css */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -15,7 +27,6 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
