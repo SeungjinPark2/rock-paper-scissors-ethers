@@ -11,3 +11,11 @@ export const ButtonWithBorder = styled.button`
     cursor: pointer;
     ${borderGradient}
 `;
+
+export const ClearedButton = styled.button`
+    background-color: transparent;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    box-sizing: border-box;
+    cursor: pointer;
+`;

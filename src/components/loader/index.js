@@ -1,52 +1,54 @@
-import styled, { keyframes } from 'styled-components';
-import { fixedCenterPosition } from '../css';
-import { ColumnFlexBox } from '../containers';
+import styled from 'styled-components';
 
-const spin = keyframes`
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-`;
-
-export const MaskBackground = styled(ColumnFlexBox)`
-    width: 100vw;
-    height: 100vh;
-    ${fixedCenterPosition}
-    background-color: rgba(0,0,0,0.7);
-    z-index: 999;
-    justify-content: center;
-    align-items: center;
-`;
-
-export const Loader = styled.div`
-    color: #313149;
-    padding: 10px;
-    display: inline-block;
-    margin: 75px 0;
+export const Loader = styled.span`
     position: relative;
-    width: 125px;
-    height: 125px;
-    z-index: 0;
-    animation: ${spin} 1s linear infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 6rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
 
-    &::before {
+    &:before,
+    &:after {
         content: "";
         position: absolute;
-        z-index: -1;
-        inset: 0;
-        padding: 15px;
         border-radius: 50%;
-        background: linear-gradient(90deg, rgba(192,0,255,1) 0%, rgba(99,136,255,1) 50%, rgba(0,255,94,1) 100%);
-        -webkit-mask: 
-            linear-gradient(#fff 0 0) content-box, 
-            linear-gradient(#fff 0 0);
-                mask: 
-            linear-gradient(#fff 0 0) content-box, 
-            linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-                mask-composite: exclude;
+        animation: pulsOut 1.8s ease-in-out infinite;
+        filter: drop-shadow(0 0 1rem rgba(255, 255, 255, 0.75));
+    }
+    &:before {
+        width: 100%;
+        padding-bottom: 100%;
+        box-shadow: inset 0 0 0 1rem #fff;
+        animation-name: pulsIn;
+    }
+    &:after {
+        width: calc(100% - 2rem);
+        padding-bottom: calc(100% - 2rem);
+        box-shadow: 0 0 0 0 #fff;
+    }
+
+    @keyframes pulsIn {
+        0% {
+        box-shadow: inset 0 0 0 1rem #fff;
+        opacity: 1;
+        }
+        50%, 100% {
+        box-shadow: inset 0 0 0 0 #fff;
+        opacity: 0;
+        }
+    }
+
+    @keyframes pulsOut {
+        0%, 50% {
+        box-shadow: 0 0 0 0 #fff;
+        opacity: 0;
+        }
+        100% {
+        box-shadow: 0 0 0 1rem #fff;
+        opacity: 1;
+        }
     }
 `;
