@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useGameValue } from '../../../../hooks/useGame';
 import { ControllerContainer, TimerContainer } from './components';
+import ButtonContainer from './buttonContainer';
 
 function Controller() {
     const { phaseExpiration, phase } = useGameValue();
@@ -41,11 +42,27 @@ function Controller() {
         };
     }, [remainedTime]);
 
+    const phaseParsed = useMemo(() => {
+        if (phase === 0n) {
+            return 'Participate';
+        } else if (phase === 1n) {
+            return 'Bet';
+        } else if (phase === 2n) {
+            return 'Commit';
+        } else {
+            return 'Reveal';
+        }
+    }, []);
+
     return (
         <ControllerContainer>
             <TimerContainer>
                 {minutes}:{seconds}
             </TimerContainer>
+            <div>
+                current phase: {phaseParsed}
+            </div>
+            <ButtonContainer />
         </ControllerContainer>
     );
 }
