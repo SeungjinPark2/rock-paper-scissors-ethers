@@ -11,6 +11,6 @@ export const ControllerContainer = styled(ColumnFlexBox)`
 `;
 
 export const TimerContainer = styled.div`
-    font-size: 1.8em;
+    font-size: 1.8rem;
     text-align: center;
 `;

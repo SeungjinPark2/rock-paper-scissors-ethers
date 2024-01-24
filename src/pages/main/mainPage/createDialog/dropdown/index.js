@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Arrow, DropDownContainer, DropDownItem, StyledDropDown } from './components';
-import { useNetworkUpdateContext, useNetworkValueContext } from '../../../../hooks/useEthereum';
+import { useNetworkUpdateContext, useNetworkValueContext } from '../../../../../hooks/useEthereum';
 
 function DropDown () {
     const { network, supportedNetworks } = useNetworkValueContext();

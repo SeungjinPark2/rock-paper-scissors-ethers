@@ -15,17 +15,17 @@ const Container = styled(ColumnFlexBox)`
 `;
 
 function Main() {
-    const [closed, setClosed] = useState(false);
+    // const [closed, setClosed] = useState(false);
     const { wallet } = useMetaMask();
-    const { wsProvider, connecting, networkErrorMsg } = useNetworkValueContext();
+    const { wsProvider, connecting } = useNetworkValueContext();
     const { GameFactory } = useContract();
     const navigate = useNavigate();
 
     // // TODO: make it Context
     // // if error message is changed, set closed to false to render error box
-    useEffect(() => {
-        setClosed(false);
-    }, [networkErrorMsg]);
+    // useEffect(() => {
+    //     setClosed(false);
+    // }, [networkErrorMsg]);
 
     useEffect(() => {
         let subscription = null;
@@ -57,13 +57,13 @@ function Main() {
         <Container>
             {
                 // error is truthy and closed is falsy
-                (!!networkErrorMsg && !closed) && (
-                    <MessageBox message={networkErrorMsg} setClosed={setClosed}/>
-                )
+                // (!!networkErrorMsg && !closed) && (
+                //     <MessageBox message={networkErrorMsg} setClosed={setClosed}/>
+                // )
             }
             {
-                connecting && (
-                    <MaskBackground>
+                (
+                    connecting && <MaskBackground>
                         <Loader />
                     </MaskBackground>
                 )

@@ -11,6 +11,8 @@ function Controller() {
         let intervalRef;
 
         const calculatedRemained = parseInt(phaseExpiration) - Math.floor(Date.now() / 1000);
+        console.log(phaseExpiration);
+        console.log(calculatedRemained);
 
         if (calculatedRemained < 0) {
             setRemainedTime(0);
