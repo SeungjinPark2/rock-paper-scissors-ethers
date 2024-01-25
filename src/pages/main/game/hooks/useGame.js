@@ -109,7 +109,12 @@ export function GameProvider({ children }) {
     }, [wsProvider]);
 
     return (
-        <GameUpdateContext.Provider value={{ setUserStatus, setExpired }}>
+        <GameUpdateContext.Provider 
+            value={{
+                setUserStatus,
+                setExpired,
+            }}
+        >
             <GameValueContext.Provider
                 value={{
                     player1,
@@ -120,7 +125,7 @@ export function GameProvider({ children }) {
                     phaseExpiration,
                     userStatus,
                     expired,
-                    loaded
+                    loaded,
                 }}
             >
                 { children }

@@ -19,7 +19,7 @@ export const PlayerSidePane = styled(ColumnFlexBox)`
 export const Splitter = styled.div`
     flex-grow: 0;
     ${commonBorder}
-    border-style: dotted;
+    border-style: dashed;
 `;
 
 export const OpponentSpan = styled.span`
