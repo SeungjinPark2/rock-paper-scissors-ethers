@@ -6,7 +6,7 @@ export default function useSalt() {
         const randomValue = new Uint8Array(32);
         crypto.getRandomValues(randomValue);
 
-        const salt = '0x' + Buffer.from(Array.from(randomValue)).toString('hex');
+        const salt = Buffer.from(Array.from(randomValue)).toString('hex');
         window.localStorage.setItem('salt', salt);
         return salt;
     }, []);

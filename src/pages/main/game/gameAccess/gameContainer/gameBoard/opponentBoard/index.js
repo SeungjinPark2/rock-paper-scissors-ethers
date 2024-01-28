@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useGameValue } from '../../../../hooks/useGame';
 import { eth } from 'web3';
 import { Card, CardImg } from '../../component';
@@ -6,11 +6,11 @@ import { Card, CardImg } from '../../component';
 function OpponentBoard({ opponent }) {
     const { phase } = useGameValue();
 
-    const CardJsx = useRef(
+    const CardJsx = useCallback((imgName) => 
         <Card>
-            <CardImg $imgName={'card.png'} $position={'relative'} />
+            <CardImg $imgName={imgName} $position={'relative'} />
         </Card>
-    );
+    , []);
 
     const content = useMemo(() => {
         // participate phase
@@ -30,13 +30,15 @@ function OpponentBoard({ opponent }) {
             if (opponent.commit === eth.abi.encodeParameter('uint32', 0)) {
                 return 'opponent is setting card...';
             } else {
-                return CardJsx.current; 
+                return CardJsx('card.png'); 
             }
         // reveal phase 
         } else if (phase === 3n) {
-            if (opponent.hand === 0n) {
-                return CardJsx.current;
-            }
+            const img = opponent.hand === 0n ? 'card.png'
+                : (opponent.hand === 1n ? 'rock.png' 
+                    : (opponent.hand === 2n ? 'scissors.png' 
+                        : 'paper.png'));
+            return CardJsx(img);
         }
 
 
