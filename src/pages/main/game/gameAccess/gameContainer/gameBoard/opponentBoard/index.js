@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useGameValue } from '../../../../hooks/useGame';
 import { eth } from 'web3';
 import { Card, CardImg } from '../../component';
+import { OpponentSpan, PlayerSidePane } from '../components';
 
 function OpponentBoard({ opponent }) {
     const { phase } = useGameValue();
@@ -45,7 +46,10 @@ function OpponentBoard({ opponent }) {
     }, [opponent, phase]);
 
     return (
-        <>{content}</>
+        <PlayerSidePane>
+            <OpponentSpan>opponent</OpponentSpan>
+            {content}
+        </PlayerSidePane>
     );
 }
 

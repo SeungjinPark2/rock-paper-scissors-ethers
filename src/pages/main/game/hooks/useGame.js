@@ -29,8 +29,9 @@ export function GameProvider({ children }) {
     const [betSize, setBetSize] = useState(0);
     const [phase, setPhase] = useState(0);
     const [phaseExpiration, setPhaseExpiration] = useState(0);
-    const [userStatus, setUserStatus] = useState/*<'creator' | 'pending' | 'participant' | 'observer'>*/(false);
+    const [userStatus, setUserStatus] = useState/*<'creator' | 'pending' | 'participant' | 'observer'>*/();
     const [expired, setExpired] = useState(true);
+    const [winner, setWinner] = useState('');
 
     const userAddr = useMemo(() => wallet.accounts[0], [wallet]);
     const loaded = useMemo(() => 
@@ -82,7 +83,7 @@ export function GameProvider({ children }) {
             Game.methods.phaseExpiration().call()
                 .then(setPhaseExpiration);
 
-            logSubscription = Game.events.allEvents();            
+            logSubscription = Game.events.allEvents();
             logSubscription.on('data', (event) => {
                 if (event.event === 'UpdatePlayers') {
                     const eventAbi = findEvent('UpdatePlayers');
@@ -96,6 +97,10 @@ export function GameProvider({ children }) {
                     // phaseExpiration has no event so manually call to fetch
                     Game.methods.phaseExpiration().call()
                         .then(setPhaseExpiration);
+                } else if (event.event === 'Winner') {
+                    const eventAbi = findEvent('Winner');
+                    const { winner } = eth.abi.decodeLog(eventAbi.inputs, event.data, event.topics);
+                    setWinner(winner);
                 } else {
                     console.log(event);
                 }
@@ -126,6 +131,7 @@ export function GameProvider({ children }) {
                     userStatus,
                     expired,
                     loaded,
+                    winner,
                 }}
             >
                 { children }
