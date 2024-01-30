@@ -25,7 +25,7 @@ const networks = [
             name: 'matic',
         },
         websocketUrl: 'wss://polygon-mumbai-bor.publicnode.com',
-        rpcUrl: 'https://rpc-mumbai.matic.today',
+        rpcUrl: 'https://polygon-mumbai-bor.publicnode.com',
         explorer: 'https://mumbai.polygonscan.com',
         contractAddress: {
             GameFactory: '0xeecae2a9eeb2de031dd7e66ead3618f7083ad830',

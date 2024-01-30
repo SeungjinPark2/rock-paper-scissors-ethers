@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { getSupportedNetworks } from '../ethereum';
 import { WebSocketProvider } from 'web3';
 
@@ -8,21 +8,21 @@ const NetworkUpdateContext = createContext();
 export function NetworkProvider({ children }) {
     const supportedNetworks = useMemo(() => getSupportedNetworks(), []);
     const [network, setNetwork] = useState(supportedNetworks[0]);
-    const [connecting, setConnecting] = useState(false);
     const [networkErrorMsg, setNetworkErrorMsg] = useState();
     const [wsProvider, setWsProvider] = useState();
 
-    // TODO: setConnecting to true will not be back to false if network state same as before.
-    const updateNetwork = useCallback((network) => {
-        setConnecting(true);
-        setNetwork(network);
+    const updateNetwork = useCallback((network_, setLoading) => {
+        connectNetwork(network_, setLoading);
+        setNetwork(network_);
     }, []);
 
-    useEffect(() => {
-        const provider = new WebSocketProvider(network.websocketUrl);
+    const connectNetwork = useCallback((network_, setLoading) => {
+        wsProvider?.removeAllListeners();
+
+        const provider = new WebSocketProvider(network_.websocketUrl);
 
         provider.on('connect', () => {
-            setConnecting(false);
+            setLoading(false);
         });
 
         provider.on('error', (e) => {
@@ -32,20 +32,16 @@ export function NetworkProvider({ children }) {
             } else {
                 setNetworkErrorMsg(`Failed to connect to ${e.currentTarget.url}`);
             }
-            setConnecting(false);
+            setLoading(false);
         });
 
         setWsProvider(provider);
-        
-        return () => {
-            provider.removeAllListeners();
-        };
-    }, [network]);
+    }, []);
 
     return (
         <NetworkUpdateContext.Provider value={{ updateNetwork }}>
             <NetworkValueContext.Provider 
-                value={{ network, connecting, networkErrorMsg, wsProvider: wsProvider, supportedNetworks }}
+                value={{ network, networkErrorMsg, wsProvider: wsProvider, supportedNetworks }}
             >
                 {children}
             </NetworkValueContext.Provider>

@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader, MaskBackground } from '../../components';
 import { useMetaMask } from '../../hooks/useMetaMask';
 import Main from '../main';
 import ErrorPage from '../error';
 
 function MetaMaskConnector() {
-    const { hasProvider, isConnecting, connectMetaMask } = useMetaMask();
+    const { hasProvider, connectMetaMask } = useMetaMask();
+    const [ loading, setLoading ] = useState();
 
     useEffect(() => {
-        connectMetaMask();
+        connectMetaMask(setLoading);
     }, []);
 
     if (hasProvider == false) {
@@ -16,7 +17,7 @@ function MetaMaskConnector() {
             <ErrorPage msg={'No MetaMask wallet was found. Please install MetaMask first. ;)'} />
         );
     } else {
-        if (isConnecting) {
+        if (loading) {
             return (
                 <MaskBackground>
                     <Loader />

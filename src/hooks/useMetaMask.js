@@ -9,7 +9,6 @@ const MetaMaskContext = createContext({});
 
 export function MetamaskContextProvider({ children }) {
     const [hasProvider, setHasProvider] = useState(null);
-    const [isConnecting, setIsConnecting] = useState(false);
     const [metamaskErrorMsg, setMetaMaskErrorMsg] = useState('');
 
     const clearError = () => setMetaMaskErrorMsg('');
@@ -62,9 +61,8 @@ export function MetamaskContextProvider({ children }) {
         };
     }, []);
 
-    const connectMetaMask = async () => {
-        setIsConnecting(true);
-
+    const connectMetaMask = useCallback(async (setLoading) => {
+        setLoading(true);
         try {
             const accounts = await window.ethereum.request({
                 method: 'eth_requestAccounts',
@@ -74,8 +72,45 @@ export function MetamaskContextProvider({ children }) {
         } catch(err) {
             setMetaMaskErrorMsg(err.message);
         }
-        setIsConnecting(false);
-    };
+        setLoading(false);
+    }, []);
+
+    const _addNetwork = useCallback(async (network_) => {
+        await ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+                {
+                    chainId: network_.chainId,
+                    chainName: network_.chainName,
+                    rpcUrls: [network_.rpcUrl],
+                    nativeCurrency: {
+                        symbol: network_.currencyInfo.symbol,
+                        name: network_.currencyInfo.name,
+                        decimals: network_.currencyInfo.decimals,
+                    },
+                },
+            ],
+        });
+    }, []);
+
+    const _switchNetwork = useCallback(async (network_) => {
+        await ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: network_.chainId }],
+        });
+    }, []);
+
+    const switchOrAddNetwork = useCallback(async (network_, setLoading) =>  {
+        try {
+            await _switchNetwork(network_);
+            setLoading(false);
+        } catch (error) {
+            if (error.code === 4902) {
+                await _addNetwork(network_);
+                setLoading(false);
+            }
+        }
+    }, []);
 
     return (
         <MetaMaskContext.Provider
@@ -84,8 +119,7 @@ export function MetamaskContextProvider({ children }) {
                 hasProvider,
                 error: !!metamaskErrorMsg,
                 metamaskErrorMsg,
-                isConnecting,
-                setIsConnecting,
+                switchOrAddNetwork,
                 connectMetaMask,
                 clearError,
             }}

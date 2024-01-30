@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { ColumnFlexBox, Loader, MaskBackground, MessageBox } from '../../components';
+import { ColumnFlexBox, Loader, MaskBackground } from '../../components';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useNetworkValueContext } from '../../hooks/useEthereum';
+import { useNetworkValueContext, useNetworkUpdateContext } from '../../hooks/useEthereum';
 import { useEffect, useState } from 'react';
 import { useContract } from '../../hooks/useContract';
 import { useMetaMask } from '../../hooks/useMetaMask';
@@ -15,17 +15,12 @@ const Container = styled(ColumnFlexBox)`
 `;
 
 function Main() {
-    // const [closed, setClosed] = useState(false);
     const { wallet } = useMetaMask();
-    const { wsProvider, connecting } = useNetworkValueContext();
+    const { network, wsProvider } = useNetworkValueContext();
     const { GameFactory } = useContract();
+    const [ loading, setLoading ] = useState(false);
+    const { updateNetwork } = useNetworkUpdateContext();
     const navigate = useNavigate();
-
-    // // TODO: make it Context
-    // // if error message is changed, set closed to false to render error box
-    // useEffect(() => {
-    //     setClosed(false);
-    // }, [networkErrorMsg]);
 
     useEffect(() => {
         let subscription = null;
@@ -53,17 +48,16 @@ function Main() {
         };
     }, [wsProvider, wallet]);
 
+    useEffect(() => {
+        setLoading(true);
+        updateNetwork(network, setLoading);
+    }, []);
+
     return (
         <Container>
             {
-                // error is truthy and closed is falsy
-                // (!!networkErrorMsg && !closed) && (
-                //     <MessageBox message={networkErrorMsg} setClosed={setClosed}/>
-                // )
-            }
-            {
                 (
-                    connecting && <MaskBackground>
+                    loading && <MaskBackground>
                         <Loader />
                     </MaskBackground>
                 )

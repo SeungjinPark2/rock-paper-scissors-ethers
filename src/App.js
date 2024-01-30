@@ -7,11 +7,11 @@ import { NetworkProvider } from './hooks/useEthereum';
 function App() {
     return (
         <div className='app'>
-            <MetamaskContextProvider>
-                <NetworkProvider>
+            <NetworkProvider>
+                <MetamaskContextProvider>
                     <RouterProvider router={router} />
-                </NetworkProvider>
-            </MetamaskContextProvider>
+                </MetamaskContextProvider>
+            </NetworkProvider>
         </div>
     );
 }

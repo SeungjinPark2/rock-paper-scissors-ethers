@@ -63,7 +63,7 @@ function CreateDialog({ setOpened }) {
                     <span style={{
                         marginRight: '10px'
                     }}>select network</span>
-                    <DropDown />
+                    <DropDown  setLoading={setLoading} />
                 </DropBoxWrap>
                 <BetSizeWrap>
                     <span>set betting size in ETH you would pay</span>

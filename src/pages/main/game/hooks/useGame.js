@@ -34,7 +34,7 @@ export function GameProvider({ children }) {
     const [winner, setWinner] = useState('');
 
     const userAddr = useMemo(() => wallet.accounts[0], [wallet]);
-    const loaded = useMemo(() => 
+    const loaded = useMemo(() =>
         betSize != null
         && phase != null
         && phaseExpiration != null
