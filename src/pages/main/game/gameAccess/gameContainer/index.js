@@ -14,7 +14,7 @@ function GameContainer() {
 
     const showWin = useMemo(() => 
         winner !== ''
-        && phase === 1n
+        && (phase === 1n || phase === 2n)
         && dialogOpen
     , [winner, phase, dialogOpen]);
 

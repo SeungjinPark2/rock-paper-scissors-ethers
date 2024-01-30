@@ -101,6 +101,8 @@ export function GameProvider({ children }) {
                     const eventAbi = findEvent('Winner');
                     const { winner } = eth.abi.decodeLog(eventAbi.inputs, event.data, event.topics);
                     setWinner(winner);
+                } else if (event.event === 'Tied') {
+                    setWinner('tied');
                 } else {
                     console.log(event);
                 }

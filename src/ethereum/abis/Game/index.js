@@ -69,6 +69,12 @@ export const GameAbi = [
     },
     {
         "anonymous": false,
+        "inputs": [],
+        "name": "Tied",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
         "inputs": [
             {
                 "components": [

@@ -17,19 +17,19 @@ function OpponentBoard({ opponent }) {
         // participate phase
         if (phase === 0n) {
             if (opponent.player === '0x0000000000000000000000000000000000000000') {
-                return 'waiting for opponent...';
+                return 'Waiting for opponent...';
             }
         // bet phase
         } else if (phase === 1n) {
             if (opponent.betDone === false) {
-                return 'opponent is betting...';
+                return 'Opponent is betting...';
             } else {
-                return 'opponent did bet';
+                return 'Opponent did bet';
             }
         // commit phase
         } else if (phase === 2n) {
             if (opponent.commit === eth.abi.encodeParameter('uint32', 0)) {
-                return 'opponent is setting card...';
+                return 'Opponent is setting card...';
             } else {
                 return CardJsx('card.png'); 
             }

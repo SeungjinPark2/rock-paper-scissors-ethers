@@ -78,6 +78,16 @@ export function GameMethodProvider({ children }) {
                 // TODO: handle error
                 console.log(error);
             }
+        },
+        claim: async() => {
+            try {
+                await GameWithMetaMask.methods.claimOpponentVanished().send({
+                    from: userAddr,
+                });
+            } catch (error) {
+                // TODO: handle error
+                console.log(error);
+            }
         }
     }) , [GameWithMetaMask, userAddr, betSize]);
 

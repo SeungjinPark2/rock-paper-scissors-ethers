@@ -10,21 +10,39 @@ const networks = [
         },
         websocketUrl: 'ws://localhost:8545',
         rpcUrl: 'http://localhost:8545',
+        explorer: '',
         contractAddress: {
             GameFactory: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
         },
     },
     {
         chainId: '0x13881',
-        chainName: 'Mumbai TestNet',
-        renderName: 'mumbai',
+        chainName: 'Matic Mumbai',
+        renderName: 'Matic mumbai',
         currencyInfo: {
             symbol: 'MATIC',
             decimals: 18,
             name: 'matic',
         },
-        websocketUrl: 'wss://rpc-mumbai.matic.today',
-        rpcUrl: 'wss://polygon-mumbai-bor.publicnode.com',
+        websocketUrl: 'wss://polygon-mumbai-bor.publicnode.com',
+        rpcUrl: 'https://rpc-mumbai.matic.today',
+        explorer: 'https://mumbai.polygonscan.com',
+        contractAddress: {
+            GameFactory: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+        },
+    },
+    {
+        chainId: '0x66eed',
+        chainName: 'Arbitrum Goerli',
+        renderName: 'Arbitrum goerli',
+        currencyInfo: {
+            symbol: 'AGOR',
+            decimals: 18,
+            name: 'agor',
+        },
+        websocketUrl: 'wss://arbitrum-goerli.publicnode.com',
+        rpcUrl: 'https://arbitrum-goerli.publicnode.com',
+        explorer: '',
         contractAddress: {
             GameFactory: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
         },

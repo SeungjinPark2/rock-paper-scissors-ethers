@@ -31,24 +31,31 @@ function PlayerBoard({ self, setDialogOpen }) {
 
     const cardSettlement = useMemo(() => {
         let value = <></>;
-        // if user committed at commit phase or reveal phase.
-        const commitCondition = phase === 2n && self.commit !== eth.abi.encodeParameter('uint32', 0);
-        const revealCondition = phase === 3n;
 
-        const img = self.hand === 0n ? 'card.png'
-            : (self.hand === 1n ? 'rock.png' 
-                : (self.hand === 2n ? 'scissors.png' 
-                    : 'paper.png'));
-
-        if (commitCondition || revealCondition) {
-            value = (
-                <Card
-                    $revealable={revealCondition}
-                    onClick={handleClick}
-                >
-                    <CardImg $imgName={img} $position={'relative'} />
-                </Card>
-            );
+        if (phase === 1n) {
+            value = <>Please click button {"\"Bet\""} to proceed game.</>;
+        } else if (phase === 2n && self.commit === eth.abi.encodeParameter('uint32', 0)) {
+            value = <>Drag your card here!</>;
+        } else {
+            // if user committed at commit phase or reveal phase.
+            const commitCondition = phase === 2n && self.commit !== eth.abi.encodeParameter('uint32', 0);
+            const revealCondition = phase === 3n;
+    
+            const img = self.hand === 0n ? 'card.png'
+                : (self.hand === 1n ? 'rock.png' 
+                    : (self.hand === 2n ? 'scissors.png' 
+                        : 'paper.png'));
+    
+            if (commitCondition || revealCondition) {
+                value = (
+                    <Card
+                        $revealable={revealCondition}
+                        onClick={handleClick}
+                    >
+                        <CardImg $imgName={img} $position={'relative'} />
+                    </Card>
+                );
+            }
         }
 
         return value;

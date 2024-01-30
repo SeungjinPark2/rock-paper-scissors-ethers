@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 function ButtonContainer() {
     const { expired, phase } = useGameValue();
     const { self } = useSelfOpponent();
-    const { bet } = useGameMethods();
+    const { bet, claim } = useGameMethods();
 
     const shouldBetButtonRender = useMemo(() => 
         expired === false
@@ -26,7 +26,9 @@ function ButtonContainer() {
             {
                 shouldClaimButtonRender && (
                     <ButtonWithBorder
-                        onClick={() => {console.log('claim!');}}
+                        onClick={async () => {
+                            await claim();
+                        }}
                     >
                         Claim
                     </ButtonWithBorder>
